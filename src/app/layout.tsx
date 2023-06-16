@@ -1,12 +1,6 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import NextTopLoader from "nextjs-toploader";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "700", "200", "300", "500", "600"],
-});
 
 export const metadata = {
   title: "Cinephilex",
@@ -20,10 +14,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      
-      <body
-        className={`${inter.className} container  text-secondary  mx-auto px-5 `}
-      >
+      <link
+        rel="icon"
+        href="/images/logo/logo.png"
+        type="image/png"
+        sizes="16x16"
+      />
+      <body className={` container  text-secondary  mx-auto px-5 `}>
+        <NextTopLoader
+          color="#b657ff"
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={true}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #5447ff,0 0 5px #ff0fbf"
+        />
         <Header />
         {children}
       </body>

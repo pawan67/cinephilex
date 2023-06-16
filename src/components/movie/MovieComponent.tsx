@@ -1,39 +1,60 @@
-import { imageUrl, img_url } from "@/globals/constants";
+"use client";
+import { blurImgUrl, imageUrl, img_url } from "@/globals/constants";
 import { MovieInterface } from "@/types";
 import { MovieDetailsInterface } from "@/types/movie";
-import { getMonthDateYear } from "@/utils";
+import { getMonthDateYear, urlConstructor } from "@/utils";
 import Image from "next/image";
 import { MdFavoriteBorder } from "react-icons/md";
 import { AiOutlineStar } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md";
 import React from "react";
+import Link from "next/link";
+import { Button } from "../ui/button";
 interface MovieComponentProps {
   movie: MovieDetailsInterface;
 }
 const MovieComponent: React.FC<MovieComponentProps> = ({ movie }) => {
+  const [image, setImage] = React.useState<string>(
+    imageUrl.w500(movie.poster_path)
+  );
+  console.log(movie);
+  const getTrailerLink = (movie: MovieDetailsInterface) => {
+    const trailer = movie.videos.results.find(
+      (video: any) => video.type === "Trailer"
+    );
+    if (trailer) {
+      return `https://www.youtube.com/watch?v=${trailer.key}`;
+    }
+    return `https://www.youtube.com/watch?v=${movie.videos.results[0].key}`;
+  };
+
   return (
     <div className=" mt-5  sm:flex sm:space-x-8">
       <div>
         <Image
-          src={imageUrl.w500(movie.poster_path)}
+          src={image}
+          onError={() => setImage("/images/fallback.jpg")}
           width={400}
           height={300}
-          className=" rounded-lg min-w-[200px] md:min-w-[300px] "
+          className=" rounded-lg shadow-xl drop-shadow-xl min-w-[200px] md:min-w-[300px] "
           alt="movie-poster"
           placeholder="blur"
-          blurDataURL="data:image/webp;base64,UklGRgwCAABXRUJQVlA4WAoAAAAgAAAAAQAAAgAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggHgAAAJABAJ0BKgIAAwAHQJYlpAAC51m2AAD+5R4qGAAAAA=="
+          blurDataURL={blurImgUrl}
         />
-        <div className=" mt-3 bg-secondary rounded-lg text-primary p-4 text-center ">
+        <div
+          onClick={() => window.open(getTrailerLink(movie))}
+          className=" mt-3 cursor-pointer bg-secondary rounded-lg text-primary p-4 text-center "
+        >
           Watch Trailer
         </div>
-        <div className=" flex justify-between mt-4  ">
-          <div className=" p-4 px-8 bg-secondary rounded-lg text-primary text-xl">
+        <div className=" grid grid-cols-3 gap-3 justify-between mt-4  ">
+          <div className=" p-4 px-8 flex justify-center bg-secondary rounded-lg text-primary text-xl">
             <MdPlaylistAdd />
           </div>
-          <div className=" p-4 px-8 bg-secondary rounded-lg text-primary text-xl">
+          <div className=" p-4 px-8 flex justify-center bg-secondary rounded-lg text-primary text-xl">
             <MdFavoriteBorder />
           </div>
-          <div className=" p-4 px-8 bg-secondary rounded-lg text-primary text-xl">
+          <div className=" p-4 px-8 flex justify-center bg-secondary rounded-lg text-primary text-xl">
             <AiOutlineStar />
           </div>
         </div>
@@ -68,7 +89,7 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie }) => {
           <h1 className=" text-2xl font-semibold">Featured Cast</h1>
           <div className=" mt-5 grid grid-cols-3 sm:grid-cols-5 xl:grid-cols-8 gap-5 sm:gap-5">
             {movie.credits.cast.slice(0, 5).map((cast: any) => (
-              <div>
+              <Link href={`/person/${urlConstructor(cast.id, cast.name)}`}>
                 <Image
                   className=" shadow-lg  rounded-lg object-contain"
                   alt="poster"
@@ -77,7 +98,7 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie }) => {
                   height={80}
                 />
                 <h3 className=" mt-3  sm:text-lg font-semibold">{cast.name}</h3>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -86,7 +107,12 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie }) => {
           <div className=" mt-5 grid grid-cols-2 sm:grid-cols-5 xl:grid-cols-6 gap-5 sm:gap-10">
             {movie.credits.crew.slice(0, 5).map((crew: any) => (
               <div>
-                <h3 className="  text-lg font-semibold">{crew.name}</h3>
+                <Link
+                  href={`/person/${urlConstructor(crew.id, crew.name)}`}
+                  className="  text-lg font-semibold"
+                >
+                  {crew.name}
+                </Link>
                 <h3 className=" text-md  text-secondary ">{crew.job}</h3>
               </div>
             ))}

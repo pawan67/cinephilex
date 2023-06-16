@@ -4,10 +4,14 @@ import Test from "@/components/miscellaneous/Test";
 import MovieComponent from "@/components/movie/MovieComponent";
 import { imageUrl, img_url } from "@/globals/constants";
 import { getMovie } from "@/handlers";
-import { getMonthDateYear } from "@/utils";
+import { getMonthDateYear, metaTagsGenerator } from "@/utils";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React from "react";
+
+import { Metadata } from "next";
+
+
 
 const MoviePage = async ({
   params,
@@ -19,6 +23,7 @@ const MoviePage = async ({
   const { movieId } = params;
 
   const movie = await getMovie(movieId);
+  
   return (
     <div>
       <MovieComponent movie={movie} />

@@ -1,5 +1,5 @@
 "use client";
-import { img_url } from "@/globals/constants";
+import { blurImgUrl, img_url } from "@/globals/constants";
 import { MovieInterface } from "@/types";
 import { getYearFromDate, urlConstructor } from "@/utils";
 import Image from "next/image";
@@ -7,6 +7,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 const PosterCard = ({ movie }: { movie: MovieInterface }) => {
+  const [image, setImage] = React.useState<string>(
+    `${img_url}${movie.poster_path}`
+  );
   return (
     <Link href={`/movie/${urlConstructor(movie.id, movie.title)}`}>
       <div className="  max-w-xs ">
@@ -14,9 +17,12 @@ const PosterCard = ({ movie }: { movie: MovieInterface }) => {
           <Image
             className=" shadow-lg  rounded-lg object-contain"
             alt="poster"
-            src={`${img_url}${movie.poster_path}`}
+            src={image}
+            onError={() => setImage("/images/fallback.jpg")}
             width={300}
             height={200}
+            placeholder="blur"
+            blurDataURL={blurImgUrl}
           />
           <div className=" absolute w-10 aspect-square bg-secondary  rounded-full -bottom-3 border-4 border-primary right-2 flex justify-center items-center ">
             <div className=" text-primary font-semibold">

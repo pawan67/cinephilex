@@ -1,11 +1,14 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { searchMoviesOrTv } from "@/handlers";
+import { Combobox } from "@headlessui/react";
+import { useRouter } from "next/navigation";
+import { getYearFromDate, urlConstructor } from "@/utils";
+
 function SearchBar() {
   const { scrollYProgress } = useScroll();
-  // make slower scroll
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
     <div className=" relative">
@@ -22,33 +25,90 @@ function SearchBar() {
 
 const SearchInput = () => {
   const [isFocused, setIsFocused] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState<any>(null);
+  const [query, setQuery] = React.useState("");
+  const router = useRouter();
+
+  const [searchResults, setSearchResults] = React.useState<any>([]);
+
+  useEffect(() => {
+    const search = async () => {
+      const data = await searchMoviesOrTv(query);
+      setSearchResults(data);
+    };
+
+    search();
+  }, [query]);
+
+  useEffect(() => {
+    if (searchValue === null) return;
+    if (searchValue.mediaType === "movie") {
+      router.push(
+        `/movie/${urlConstructor(searchValue.id, searchValue.title)}`
+      );
+    } else {
+      router.push(`/tv/${urlConstructor(searchValue.id, searchValue.name)}`);
+    }
+  }, [searchValue]);
+
+  console.log(searchResults);
 
   return (
     <div className=" absolute top-[50%] left-[50%] -translate-x-[50%] transition-all -translate-y-[50%]">
-      <motion.div
-        // initial={{ scale: 1 }}
-        // animate={{ scale: isFocused ? 1.1 : 1 }}
-        // style={{ willChange: "transform" }}
+      <Combobox
+        onChange={(value: any) => {
+          console.log(value);
+          setSearchValue(value);
+          setQuery(value);
+        }}
+        as="div"
         className={` transition-all ${
           isFocused
             ? " drop-shadow-2xl shadow-2xl "
             : "shadow-xl  drop-shadow-lg "
-        }  rounded-lg p-4  bg-white`}
+        }  rounded-lg p-4 max-w-lg bg-white`}
       >
         <div className=" space-x-4  flex items-center">
           <AiOutlineSearch className=" text-gray-400 text-3xl" />
-          <input
-            onChange={(e) => setSearchValue(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            value={searchValue}
+          <Combobox.Input
+            onChange={(event) => setQuery(event.target.value)}
+            displayValue={(result: any) => result.name}
             className=" sm:w-[400px] outline-none"
-            placeholder="Search movies and TV shows here"
+            placeholder="Search movies or TV shows here"
             type="text"
           />
         </div>
-      </motion.div>
+        <Combobox.Options className="overflow-y-scroll  max-h-[350px]">
+          {searchResults.map((result: any) => (
+            <Combobox.Option key={result.id} value={result} as="div">
+              {({ active, selected }) => (
+                <li
+                  className={`${
+                    active
+                      ? "bg-gradient-to-r from-indigo-500 via-pink-500 to-blue-500 background-animate font-semibold text-white"
+                      : "bg-white text-black"
+                  } my-2 px-3 py-2   rounded-lg`}
+                >
+                  {result.name ||
+                    result.title + " - " + getYearFromDate(result.release_date)}
+
+                  <div
+                    className={`${
+                      active ? "text-white text-xs" : "text-xs  text-gray-400"
+                    }`}
+                  >
+                    {result.mediaType === "movie"
+                      ? "Movie"
+                      : result.mediaType === "tv"
+                      ? "TV Show"
+                      : "Person"}
+                  </div>
+                </li>
+              )}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+      </Combobox>
     </div>
   );
 };

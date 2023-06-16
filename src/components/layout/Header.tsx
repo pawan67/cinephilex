@@ -19,6 +19,7 @@ function Header() {
 
             return (
               <Link
+                key={url.name}
                 href={url.url}
                 className={`   transition duration-150 border-b-4  hover:border-secondary ${
                   url.url == currentUrl

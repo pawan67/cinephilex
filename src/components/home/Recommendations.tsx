@@ -34,13 +34,13 @@ function Recommendations({
       <Tab.Panels>
         <Tab.Panel className="  cards_container">
           {popularMovies.map((movie) => (
-            <PosterCard movie={movie} />
+            <PosterCard key={movie.id} movie={movie} />
           ))}
         </Tab.Panel>
         <Tab.Panel className="  cards_container">
           {" "}
           {popularTvs.map((movie) => (
-            <TVShowsPosterCard tv={movie} />
+            <TVShowsPosterCard key={movie.id} tv={movie} />
           ))}
         </Tab.Panel>
       </Tab.Panels>

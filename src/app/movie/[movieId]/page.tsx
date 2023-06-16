@@ -11,8 +11,6 @@ import React from "react";
 
 import { Metadata } from "next";
 
-
-
 const MoviePage = async ({
   params,
 }: {
@@ -23,7 +21,7 @@ const MoviePage = async ({
   const { movieId } = params;
 
   const movie = await getMovie(movieId);
-  
+
   return (
     <div>
       <MovieComponent movie={movie} />
@@ -32,7 +30,7 @@ const MoviePage = async ({
       </div>
       <div className=" cards_container">
         {movie.recommendations.results.map((movie: any) => (
-          <PosterCard movie={movie} />
+          <PosterCard key={movie.id} movie={movie} />
         ))}
       </div>
     </div>

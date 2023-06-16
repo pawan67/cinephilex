@@ -24,7 +24,7 @@ const PersonPage = async ({ params }: Props) => {
           <h1 className=" text-2xl font-semibold">Casted In</h1>
           <div className=" mt-5 cards_container">
             {person.data.combined_credits.cast.map((movie: any) => (
-              <PosterCard movie={movie} />
+              <PosterCard key={movie.id} movie={movie} />
             ))}
           </div>
         </div>

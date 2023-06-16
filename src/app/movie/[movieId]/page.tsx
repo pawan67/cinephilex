@@ -22,7 +22,7 @@ export async function generateMetadata({
   return metaTagsGenerator({
     title: movie.title,
     description: movie.overview,
-    img: imageUrl.w500(movie.poster_path),
+    img: imageUrl.w500(movie.backdrop_path),
     url: `/movie/${urlConstructor(movie.id, movie.title)}`,
   });
 }

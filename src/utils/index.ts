@@ -63,13 +63,13 @@ export const metaTagsGenerator = ({
       images: [
         {
           url: img || "https://i.imgur.com/5U4Bzjvl.png",
-          // width: 800,
-          // height: 600,
+          width: 800,
+          height: 450,
         },
         {
           url: img || "https://i.imgur.com/5U4Bzjvl.png",
-          // width: 900,
-          // height: 800,
+          width: 800,
+          height: 450,
         },
       ],
       site_name: "Cinephilex",

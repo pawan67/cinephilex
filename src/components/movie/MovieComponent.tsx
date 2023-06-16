@@ -108,9 +108,9 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie }) => {
           <h1 className=" text-2xl font-semibold">Featured Crew</h1>
           <div className=" mt-5 grid grid-cols-2 sm:grid-cols-5 xl:grid-cols-6 gap-5 sm:gap-10">
             {movie.credits.crew.slice(0, 5).map((crew: any) => (
-              <div>
+              <div key={crew.id}>
                 <Link
-                key={crew.id}
+                
                   href={`/person/${urlConstructor(crew.id, crew.name)}`}
                   className="  text-lg font-semibold"
                 >

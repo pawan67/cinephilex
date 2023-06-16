@@ -2,10 +2,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import NextTopLoader from "nextjs-toploader";
 
-export const metadata = {
-  title: "Cinephilex",
-  description: "Rate and review your favorite movies and TV shows",
-};
+
 
 export default function RootLayout({
   children,

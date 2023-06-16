@@ -91,7 +91,10 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie }) => {
           <h1 className=" text-2xl font-semibold">Featured Cast</h1>
           <div className=" mt-5 grid grid-cols-3 sm:grid-cols-5 xl:grid-cols-8 gap-5 sm:gap-5">
             {movie.credits.cast.slice(0, 5).map((cast: any) => (
-              <Link key={cast.id} href={`/person/${urlConstructor(cast.id, cast.name)}`}>
+              <Link
+                key={cast.id}
+                href={`/person/${urlConstructor(cast.id, cast.name)}`}
+              >
                 <Image
                   className=" shadow-lg  rounded-lg object-contain"
                   alt="poster"
@@ -110,7 +113,6 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie }) => {
             {movie.credits.crew.slice(0, 5).map((crew: any) => (
               <div key={crew.id}>
                 <Link
-                
                   href={`/person/${urlConstructor(crew.id, crew.name)}`}
                   className="  text-lg font-semibold"
                 >

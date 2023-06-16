@@ -32,12 +32,18 @@ export const randomizeResults = (movie: any, tv: any) => {
   return results.sort(() => Math.random() - 0.5);
 };
 
-export const metaTagsGenerator = (
-  title?: string,
-  description?: string,
-  image?: string,
-  url?: string
-) => {
+export const metaTagsGenerator = ({
+  title,
+  description,
+  img,
+  url,
+}: {
+  title?: string;
+  description?: string;
+  img?: string;
+  url?: string;
+}) => {
+  // https://i.imgur.com/8Oz2bMh.png
   const metaObject = {
     title: title || "Cinephilex | Movie and TV Show Database",
     description:
@@ -47,12 +53,25 @@ export const metaTagsGenerator = (
     openGraph: {
       type: "website",
       locale: "en_IE",
-      url: url || "https://cinephilex.vercel.app/",
+      url:
+        `https://cinephilex.vercel.app${url}` ||
+        "https://cinephilex.vercel.app/",
       title: title || "Cinephilex | Movie and TV Show Database",
       description:
         description ||
         "Cinephilex is a movie and tv show database. Find information about your favorite movies and tv shows.",
-      image: image || "https://i.imgur.com/8Oz2bMh.png",
+      images: [
+        {
+          url: img || "https://i.imgur.com/8Oz2bMh.png",
+          // width: 800,
+          // height: 600,
+        },
+        {
+          url: img || "https://i.imgur.com/8Oz2bMh.png",
+          // width: 900,
+          // height: 800,
+        },
+      ],
       site_name: "Cinephilex",
     },
   };

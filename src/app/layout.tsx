@@ -19,7 +19,7 @@ export default function RootLayout({
       />
       <body className={` container  text-secondary  mx-auto px-5 `}>
         <NextTopLoader
-          color="#b657ff"
+          color="#2E2D2F"
           crawlSpeed={200}
           height={3}
           crawl={true}

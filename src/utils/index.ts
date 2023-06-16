@@ -43,7 +43,7 @@ export const metaTagsGenerator = ({
   img?: string;
   url?: string;
 }) => {
-  // https://i.imgur.com/8Oz2bMh.png
+  // https://i.imgur.com/5U4Bzjvl.png
   const metaObject = {
     title: title || "Cinephilex | Movie and TV Show Database",
     description:
@@ -62,17 +62,24 @@ export const metaTagsGenerator = ({
         "Cinephilex is a movie and tv show database. Find information about your favorite movies and tv shows.",
       images: [
         {
-          url: img || "https://i.imgur.com/8Oz2bMh.png",
+          url: img || "https://i.imgur.com/5U4Bzjvl.png",
           // width: 800,
           // height: 600,
         },
         {
-          url: img || "https://i.imgur.com/8Oz2bMh.png",
+          url: img || "https://i.imgur.com/5U4Bzjvl.png",
           // width: 900,
           // height: 800,
         },
       ],
       site_name: "Cinephilex",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title || "Cinephilex | Movie and TV Show Database",
+      description: description || "Cinephilex is a movie and tv show database.",
+      // creator: "@goldeninfotech",
+      images: [img || "https://i.imgur.com/5U4Bzjvl.png"],
     },
   };
 
